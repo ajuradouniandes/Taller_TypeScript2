@@ -8,11 +8,10 @@ function renderSeries(Series: Serie[]):void {
     Series.forEach(serie => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td><a href="${serie.link}" target="_blank">${serie.id}</a></td>
-            <td>${serie.title}</td>
+            <td>${serie.id}</a></td>
+            <td><a href="#" data-id="${serie.id}">${serie.title}</td>
             <td>${serie.platform}</td>
             <td>${serie.seasons}</td>
-            <td>${serie.description}</td>
         `;
         tableBody.appendChild(row);
     });
@@ -34,3 +33,24 @@ row.innerHTML = `
     <td>${promSeasons}</td>
 `;
 tableFoot.appendChild(row);
+
+tableBody.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    if (target.tagName === 'A' && target.dataset.id) {
+        const id = parseInt(target.dataset.id);
+        const serie = series[id - 1];
+        if (serie) {
+            let card = `
+                <div class="card mt-5" style="width: 18rem;">
+                    <img src="${serie.image}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <p class="card-text">${serie.description}</p>
+                        <a href="${serie.link}" target="_blank">${serie.title}</a>
+                    </div>
+                </div>
+            `;
+            const div: HTMLElement = document.getElementById('cardInformation')!;
+            div.innerHTML = card;
+        }
+    }
+});
